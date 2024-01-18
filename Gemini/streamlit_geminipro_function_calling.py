@@ -72,11 +72,8 @@ def handle_function_call(response):
 
 
 def get_bus_routes(parameters):
-
     destination = parameters['destination']
-    
     base_url = "https://maps.googleapis.com/maps/api/directions/json"
-    
     params = {
         "origin": "111 8th Ave, New York, NY 10011",
         "destination": destination,
@@ -84,42 +81,33 @@ def get_bus_routes(parameters):
         "key": "", //ENTER GOOGLE MAPS KEY HERE 
         "transit_mode": "bus"
     }
-
     response = requests.get(base_url, params=params)
     data = response.json()
-
     if response.status_code == 200:
         # Check if routes are found
         if "routes" in data:
             bus_routes= data["routes"]
-            return {"directions": bus_routes}
-                        
+            return {"directions": bus_routes}              
         else:
             return {"directions" : "No routes found"}
         
 
 def get_direction_routes(parameters):
-
     destination = parameters['destination']
-    
     base_url = "https://maps.googleapis.com/maps/api/directions/json"
-    
     params = {
         "origin": "111 8th Ave, New York, NY 10011",
         "destination": destination,
         "mode": "transit",
         "key": "" //ENTER GOOGLE MAPS KEY HERE 
     }
-
     response = requests.get(base_url, params=params)
     data = response.json()
-
     if response.status_code == 200:
         # Check if routes are found
         if "routes" in data:
             bus_routes= data["routes"]
-            return {"directions": bus_routes}
-                        
+            return {"directions": bus_routes}               
         else:
             return {"directions" : "No routes found"}
 
@@ -180,8 +168,6 @@ for message in st.session_state.messages:
         avatar=message.get('avatar'),
     ):
         st.markdown(message['content'])
-
-
 # React to user input
 if prompt := st.chat_input('Your message here...'):
     # Save this as a chat for later
@@ -227,9 +213,7 @@ if prompt := st.chat_input('Your message here...'):
     ):
         message_placeholder = st.empty()
         full_response = ''
-        validfunction = response.candidates[0].content.parts[0].function_call
-        
-            
+        validfunction = response.candidates[0].content.parts[0].function_call   
         if (validfunction):
             function_name = validfunction.name
             function_response = handle_function_call(response)
